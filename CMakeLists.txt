@@ -32,7 +32,7 @@ include(Common)
 
 common_find_package(Boost COMPONENTS program_options unit_test_framework)
 common_find_package(GLUT)
-common_find_package(LibJpegTurbo 1.4)
+common_find_package(LibJpegTurbo)
 if(NOT LibJpegTurbo_FOUND)
   common_find_package(LibJpegTurbo 1.2 REQUIRED)
   list(APPEND COMMON_FIND_PACKAGE_DEFINES DEFLECT_USE_LEGACY_LIBJPEGTURBO)

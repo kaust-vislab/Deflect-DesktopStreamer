@@ -348,7 +348,7 @@ void _testStereoBuffer(deflect::server::ReceiveBuffer& buffer)
 
     size_t left = 0;
     size_t right = 0;
-    for (const auto tile : tiles)
+    for (const auto &tile : tiles)
     {
         switch (tile.view)
         {

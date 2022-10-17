@@ -29,11 +29,7 @@ set(DESKTOPSTREAMER_LINK_LIBRARIES
 
 set(DEFLECT_DESKTOPSTREAMER_HOSTS
     "\
-{\"DisplayWall Ground floor\", \"bbpav02.bbp.epfl.ch\"}, \
-{\"DisplayWall 3rd floor\", \"bbpav04.bbp.epfl.ch\"}, \
-{\"OpenDeck 4th floor\", \"cave1.bbp.epfl.ch\"}, \
-{\"DisplayWall 5th floor\", \"bbpav05.bbp.epfl.ch\"}, \
-{\"DisplayWall 6th floor\", \"bbpav06.bbp.epfl.ch\"}"
+{\"Zone 2\", \"z2-fe.vis.kaust.edu.sa\"}"
     CACHE STRING "List of default hosts for the DesktopStreamer application"
 )
 set_source_files_properties(defaults.cpp PROPERTIES COMPILE_DEFINITIONS

@@ -27,6 +27,7 @@
 
 #import <AppKit/NSWorkspace.h>
 #import <AppKit/NSRunningApplication.h>
+#import <ApplicationServices/ApplicationServices.h>
 #import <Foundation/Foundation.h>
 
 namespace
@@ -57,7 +58,7 @@ NSArray* getWindows( NSRunningApplication* app, const CFArrayRef& windowList )
     __block NSMutableArray* windows = [NSMutableArray array];
     [(NSArray*)windowList enumerateObjectsWithOptions:NSEnumerationConcurrent
                            usingBlock:^( NSDictionary* info, NSUInteger, BOOL* )
-    {
+    { 
         const int pid = [(NSNumber*)[info objectForKey:(NSString *)kCGWindowOwnerPID] intValue];
         if( pid == [app processIdentifier])
             [windows addObject:info];
@@ -65,6 +66,23 @@ NSArray* getWindows( NSRunningApplication* app, const CFArrayRef& windowList )
     return [[windows copy] autorelease];
 }
 
+
+
+
+/*
+NSArray* getWindows(NSRunningApplication *process, const CFArrayRef& windowList) {
+    // get a list of this application's windows
+    CFArrayRef windows = CGWindowListCopyWindowInfo(kCGWindowListOptionOnScreenOnly | kCGWindowListExcludeDesktopElements, kCGNullWindowID);
+    __block NSMutableArray *appWindowDicts = [NSMutableArray array];
+    [(NSArray *)windows enumerateObjectsUsingBlock:^(NSDictionary *info, NSUInteger idx, BOOL *stop) {
+        if ([(NSNumber *)[info objectForKey:(NSString *)kCGWindowOwnerPID] intValue] == [process processIdentifier]) {
+            [appWindowDicts addObject:info];
+        }
+    }];
+	CFRelease(windows);
+    return [[appWindowDicts copy] autorelease];
+}
+*/
 QPixmap getPreviewPixmap( const QPixmap& pixmap )
 {
     return QPixmap::fromImage(
