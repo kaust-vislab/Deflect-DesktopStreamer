@@ -1,8 +1,6 @@
 # Deflect
 
-Welcome to Deflect, a C++ library for streaming pixels to other Deflect-based
-applications, for example [Tide](https://github.com/BlueBrain/Tide).
-Deflect offers a stable API marked with version 1.0 (for the client part).
+KAUST fork of deflect for streaming to DisplayCluster on the Zone 2 display wall. Some changes have been made to build on modern Macs. Build instructions or current to October 2022.
 
 ## Overview
 
@@ -33,17 +31,42 @@ The following applications are provided which make use of the streaming API:
 
 ## Building from source
 
+First build oibjpeg-turbo
+
+### build libjpegturbo
 ~~~
-  git clone --recursive https://github.com/BlueBrain/Deflect.git
+git clone https://github.com/libjpeg-turbo/libjpeg-turbo.git
+cd libjpeg-turbo
+mkdir build
+cd build
+ccmake -GNinja -DCMAKE_INSTALL_PREFIX=../install ../.
+ninja
+ninja install
+~~~
+
+
+### Setup
+~~~
+  git clone --recursive https://github.com/kaust-vislab/Deflect-DesktopStreamer.git
   mkdir Deflect/build
   cd Deflect/build
-  cmake -GNinja ..
-  ninja
 ~~~
 
-## ChangeLog
 
-To keep track of the changes between releases check the @ref Changelog.
+### linux
+~~~
+
+cmake -DCMAKE_INSTALL_PREFIX=../install -DUSE_PYTHON_VERSION=3 -DCMAKE_BUILD_TYPE=RELEASE -DLibJpegTurbo_INCLUDE_DIR=/home/kressjm/packages/libjpeg-turbo/install/include/ -DLibJpegTurbo_LIBRARY=/home/kressjm/packages/libjpeg-turbo/install/lib/libturbojpeg.a -DCOMMON_LIBRARY_TYPE=STATIC ../.
+~~~
+
+### Mac
+Had to fix a bunch of files and then change config options
+Openmp linking was a problem
+~~~
+cmake -DCMAKE_INSTALL_PREFIX=../install -DUSE_PYTHON_VERSION=3 -DCMAKE_BUILD_TYPE=RELEASE -DLibJpegTurbo_INCLUDE_DIR=/Users/kressjm/packages/libjpeg-turbo/install/include/ -DLibJpegTurbo_LIBRARY=/Users/kressjm/packages/libjpeg-turbo/install/lib/libturbojpeg.a  -DDEFLECT_DESKTOPSTREAMER_HOSTS="{"Z2", "z2-fe.vis.kaust.edu.sa"}"   -DCPACK_SOURCE_RPM=ON -DCMAKE_OSX_ARCHITECTURES=arm64 -DOpenMP_CXX_FLAGS="-Xpreprocessor  -fopenmp" -DOpenMP_CXX_LIB_NAMES="-lomp" -DOpenMP_C_FLAGS="-Xpreprocessor -fopenmp" -DOpenMP_C_LIB_NAMES="lomp" -DCOMMON_LIBRARY_TYPE=static ../.
+~~~
+
+
 
 ## About
 
