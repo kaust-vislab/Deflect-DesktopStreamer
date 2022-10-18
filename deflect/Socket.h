@@ -54,6 +54,7 @@ typedef __int32 int32_t;
 #include <QMutex>
 #include <QObject>
 
+
 class QTcpSocket;
 
 namespace deflect

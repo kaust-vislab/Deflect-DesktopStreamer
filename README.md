@@ -47,7 +47,7 @@ ninja install
 
 ### Setup
 ~~~
-  git clone --recursive https://github.com/kaust-vislab/Deflect-DesktopStreamer.git
+  git clone https://github.com/kaust-vislab/Deflect-DesktopStreamer.git
   mkdir Deflect/build
   cd Deflect/build
 ~~~
