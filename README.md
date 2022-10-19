@@ -51,6 +51,25 @@ cmake -DCMAKE_INSTALL_PREFIX=../install -DUSE_PYTHON_VERSION=3 -DCMAKE_BUILD_TYP
 cmake -DCMAKE_INSTALL_PREFIX=../install -DUSE_PYTHON_VERSION=3 -DCMAKE_BUILD_TYPE=RELEASE -DLibJpegTurbo_INCLUDE_DIR=/Users/kressjm/packages/libjpeg-turbo/install/include/ -DLibJpegTurbo_LIBRARY=/Users/kressjm/packages/libjpeg-turbo/install/lib/libturbojpeg.a  -DCMAKE_OSX_ARCHITECTURES=arm64 -DOpenMP_CXX_FLAGS="-Xpreprocessor  -fopenmp -lomp" -DOpenMP_CXX_LIB_NAMES="-lomp" -DOpenMP_C_FLAGS="-Xpreprocessor -fopenmp -lomp" -DOpenMP_C_LIB_NAMES="lomp" -DCOMMON_LIBRARY_TYPE=STATIC ../.
 ~~~
 
+#### Creating a mac distribution
+First you will need to sign the `*.app` file using something like:
+
+`codesign --force --deep --sign - DesktopStreamer.app/  `
+
+
+Then:
+- Use Disk Utility to create a new empty sparse bundle disk image
+- Double-click the image to open it.
+- Copy your app into the image.
+- Make a link to /Applications in the image.
+- Hide the toolbar/sidebar/etc. as desired.
+- Using View Options set to always one in icon mode.
+- Also add a background image if you like using View Options. Background images often contain text such as "Drag App to Application". Layout the app and /Applications icons to match your background image.
+- In another Finder window eject the sparse bundle.
+- In Disk Utility use Images -> Convert... to convert the sparse bundle to a read-only DMG
+
+
+This should be done for both the M1 and intel versions if we are supporting both chips.
 
 
 ## Overview
