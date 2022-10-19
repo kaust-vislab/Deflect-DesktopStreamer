@@ -2,6 +2,57 @@
 
 KAUST fork of deflect for streaming to DisplayCluster on the Zone 2 display wall. Some changes have been made to build on modern Macs. Build instructions or current to October 2022.
 
+
+## Building from source
+
+First build oibjpeg-turbo
+
+### build libjpegturbo
+~~~
+git clone https://github.com/libjpeg-turbo/libjpeg-turbo.git
+cd libjpeg-turbo
+mkdir build
+cd build
+ccmake -GNinja -DCMAKE_INSTALL_PREFIX=../install ../.
+ninja
+ninja install
+~~~
+
+
+### Setup
+~~~
+git clone https://github.com/kaust-vislab/Deflect-DesktopStreamer.git
+mkdir Deflect/build
+cd Deflect/build
+~~~
+
+
+### linux
+~~~
+
+cmake -DCMAKE_INSTALL_PREFIX=../install -DUSE_PYTHON_VERSION=3 -DCMAKE_BUILD_TYPE=RELEASE -DLibJpegTurbo_INCLUDE_DIR=/home/kressjm/packages/libjpeg-turbo/install/include/ -DLibJpegTurbo_LIBRARY=/home/kressjm/packages/libjpeg-turbo/install/lib/libturbojpeg.a -DCOMMON_LIBRARY_TYPE=STATIC ../.
+~~~
+
+### Mac
+Had to fix a bunch of files and then change config options
+Openmp linking was a problem
+
+** Another issue is supporting Mac's that are using the intel vs. M1 chip. We need to build
+A version of desktop streamer on both of these architectures. Building the x86_64 on the M1
+Was not working cleanly due to using QT5 and it not supporting both builds currently **
+
+~~~
+cmake -DCMAKE_INSTALL_PREFIX=../install -DUSE_PYTHON_VERSION=3 -DCMAKE_BUILD_TYPE=RELEASE -DLibJpegTurbo_INCLUDE_DIR=/Users/kressjm/packages/libjpeg-turbo/install/include/ -DLibJpegTurbo_LIBRARY=/Users/kressjm/packages/libjpeg-turbo/install/lib/libturbojpeg.a  -DCMAKE_OSX_ARCHITECTURES=x86_64 -DOpenMP_CXX_FLAGS="-Xpreprocessor  -fopenmp -lomp" -DOpenMP_CXX_LIB_NAMES="-lomp" -DOpenMP_C_FLAGS="-Xpreprocessor -fopenmp -lomp" -DOpenMP_C_LIB_NAMES="lomp" -DCOMMON_LIBRARY_TYPE=STATIC ../.
+~~~
+
+
+** now make a whole new build to support M1 **
+~~~
+cmake -DCMAKE_INSTALL_PREFIX=../install -DUSE_PYTHON_VERSION=3 -DCMAKE_BUILD_TYPE=RELEASE -DLibJpegTurbo_INCLUDE_DIR=/Users/kressjm/packages/libjpeg-turbo/install/include/ -DLibJpegTurbo_LIBRARY=/Users/kressjm/packages/libjpeg-turbo/install/lib/libturbojpeg.a  -DCMAKE_OSX_ARCHITECTURES=arm64 -DOpenMP_CXX_FLAGS="-Xpreprocessor  -fopenmp -lomp" -DOpenMP_CXX_LIB_NAMES="-lomp" -DOpenMP_C_FLAGS="-Xpreprocessor -fopenmp -lomp" -DOpenMP_C_LIB_NAMES="lomp" -DCOMMON_LIBRARY_TYPE=STATIC ../.
+~~~
+
+
+
 ## Overview
 
 ![Deflect features overview](doc/overview.png)
@@ -28,43 +79,6 @@ The following applications are provided which make use of the streaming API:
 * SimpleStreamer: A simple example to demonstrate streaming of an OpenGL
   application.
 * QmlStreamer (optional): An offscreen application to stream any given qml file.
-
-## Building from source
-
-First build oibjpeg-turbo
-
-### build libjpegturbo
-~~~
-git clone https://github.com/libjpeg-turbo/libjpeg-turbo.git
-cd libjpeg-turbo
-mkdir build
-cd build
-ccmake -GNinja -DCMAKE_INSTALL_PREFIX=../install ../.
-ninja
-ninja install
-~~~
-
-
-### Setup
-~~~
-  git clone https://github.com/kaust-vislab/Deflect-DesktopStreamer.git
-  mkdir Deflect/build
-  cd Deflect/build
-~~~
-
-
-### linux
-~~~
-
-cmake -DCMAKE_INSTALL_PREFIX=../install -DUSE_PYTHON_VERSION=3 -DCMAKE_BUILD_TYPE=RELEASE -DLibJpegTurbo_INCLUDE_DIR=/home/kressjm/packages/libjpeg-turbo/install/include/ -DLibJpegTurbo_LIBRARY=/home/kressjm/packages/libjpeg-turbo/install/lib/libturbojpeg.a -DCOMMON_LIBRARY_TYPE=STATIC ../.
-~~~
-
-### Mac
-Had to fix a bunch of files and then change config options
-Openmp linking was a problem
-~~~
-cmake -DCMAKE_INSTALL_PREFIX=../install -DUSE_PYTHON_VERSION=3 -DCMAKE_BUILD_TYPE=RELEASE -DLibJpegTurbo_INCLUDE_DIR=/Users/kressjm/packages/libjpeg-turbo/install/include/ -DLibJpegTurbo_LIBRARY=/Users/kressjm/packages/libjpeg-turbo/install/lib/libturbojpeg.a  -DDEFLECT_DESKTOPSTREAMER_HOSTS="{"Z2", "z2-fe.vis.kaust.edu.sa"}"   -DCPACK_SOURCE_RPM=ON -DCMAKE_OSX_ARCHITECTURES=arm64 -DOpenMP_CXX_FLAGS="-Xpreprocessor  -fopenmp" -DOpenMP_CXX_LIB_NAMES="-lomp" -DOpenMP_C_FLAGS="-Xpreprocessor -fopenmp" -DOpenMP_C_LIB_NAMES="lomp" -DCOMMON_LIBRARY_TYPE=static ../.
-~~~
 
 
 
