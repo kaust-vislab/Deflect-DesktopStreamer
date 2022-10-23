@@ -8,6 +8,7 @@ KAUST fork of deflect for streaming to DisplayCluster on the Zone 2 display wall
 First build oibjpeg-turbo
 
 ### build libjpegturbo
+NASM is a prereq for performance. Use brew or conda to install this first. 
 ~~~
 git clone https://github.com/libjpeg-turbo/libjpeg-turbo.git
 cd libjpeg-turbo
