@@ -50,7 +50,7 @@ namespace ut = boost::unit_test;
 #include <iostream>
 
 #include <QThread>
-#include <QRandomGenerator>
+//#include <QRandomGenerator>
 
 // Tests local throughput of the streaming library by sending raw as well as
 // blank and random images through deflect::Stream. Baseline test for best-case
@@ -115,7 +115,10 @@ class DCThread : public QThread
                   << " megapixel/s (" << NIMAGES / time << " FPS)" << std::endl;
 
         for (size_t i = 0; i < NBYTES; ++i)
-            pixels[i] = uint8_t(QRandomGenerator::global()->generate());
+        {
+            pixels[i] = uint8_t(qrand());
+            // pixels[i] = uint8_t(QRandomGenerator::global()->generate());
+        }
         futures.clear();
         futures.reserve(NIMAGES * 2);
         timer.restart();
